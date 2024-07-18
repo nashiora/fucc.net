@@ -23,8 +23,15 @@ public static class CoreTest
         builder.PositionAtEnd(entryBlock);
         builder.BuildRet(LLVMValueRef.CreateConstInt(LLVMTypeRef.Int32, 69, true));
 
-        var target = LLVMTargetRef.GetTargetFromTriple(LLVMTargetRef.DefaultTriple);
-        var machine = target.CreateTargetMachine(LLVMTargetRef.DefaultTriple, "generic", "", LLVMCodeGenOptLevel.LLVMCodeGenLevelNone, LLVMRelocMode.LLVMRelocDefault, LLVMCodeModel.LLVMCodeModelDefault);
-        machine.EmitToFile(module, "test.o", LLVMCodeGenFileType.LLVMObjectFile);
+        try
+        {
+            var target = LLVMTargetRef.GetTargetFromTriple(LLVMTargetRef.DefaultTriple);
+            var machine = target.CreateTargetMachine(LLVMTargetRef.DefaultTriple, "generic", "", LLVMCodeGenOptLevel.LLVMCodeGenLevelNone, LLVMRelocMode.LLVMRelocDefault, LLVMCodeModel.LLVMCodeModelDefault);
+            machine.EmitToFile(module, "test.o", LLVMCodeGenFileType.LLVMObjectFile);
+        }
+        finally
+        {
+            File.Delete("test.o");
+        }
     }
 }

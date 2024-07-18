@@ -8,13 +8,14 @@
     <PublishAot>true</PublishAot>
     <InvariantGlobalization>true</InvariantGlobalization>
     <RootNamespace>Fucc.Driver</RootNamespace>
+    <AssemblyName>fucc</AssemblyName>
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Fucc.Core\Fucc.Core.csproj" />
-    <ProjectReference Include="..\Fucc.FrontEnd.C\Fucc.FrontEnd.C.csproj" />
-    <ProjectReference Include="..\Fucc.FrontEnd.Laye\Fucc.FrontEnd.Laye.csproj" />
-    <ProjectReference Include="..\Fucc.FrontEnd.FuccIR\Fucc.FrontEnd.FuccIR.csproj" />
+    <ProjectReference Include="..\..\src\Fucc.Core\Fucc.Core.csproj" />
+    <ProjectReference Include="..\..\src\Fucc.FrontEnd.C\Fucc.FrontEnd.C.csproj" />
+    <ProjectReference Include="..\..\src\Fucc.FrontEnd.Laye\Fucc.FrontEnd.Laye.csproj" />
+    <ProjectReference Include="..\..\src\Fucc.FrontEnd.FuccIR\Fucc.FrontEnd.FuccIR.csproj" />
   </ItemGroup>
 
 </Project>

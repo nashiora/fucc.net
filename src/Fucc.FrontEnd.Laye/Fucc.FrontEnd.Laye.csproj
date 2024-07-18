@@ -4,11 +4,12 @@
     <TargetFramework>net8.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
-    <RootNamespace>Fucc.FrontEnd.C</RootNamespace>
+    <RootNamespace>Fucc.FrontEnd.Laye</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Fucc.Core\Fucc.Core.csproj" />
+    <ProjectReference Include="..\..\src\Fucc.Core\Fucc.Core.csproj" />
+    <ProjectReference Include="..\..\src\Fucc.FrontEnd.C\Fucc.FrontEnd.C.csproj" />
   </ItemGroup>
 
   <ItemGroup>
