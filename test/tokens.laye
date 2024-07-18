@@ -1,1 +1,11 @@
-var foo
+var void noreturn bool int true false nil if else for while do switch case
+default return break continue fallthrough yield unreachable defer discard
+goto xyzzy assert try catch struct variant enum template alias test import
+export operator mut new delete cast is sizeof alignof offsetof not and or
+xor varargs const foreign inline callconv pure discardable
+
+foo bar baz vec2
+
+int main() { return foo; }
+
+"foo" 'c'

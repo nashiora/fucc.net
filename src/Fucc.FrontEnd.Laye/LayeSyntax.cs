@@ -12,6 +12,20 @@ public class LayeSyntax
     }
 }
 
+public class LayeToken : LayeSyntax
+{
+    public LayeSyntaxKind ContextualKind { get; internal set; } = LayeSyntaxKind.Invalid;
+
+    public long IntegerValue { get; internal set; }
+    public double FloatValue { get; internal set; }
+    public string StringValue { get; internal set; } = string.Empty;
+
+    public LayeToken(LayeSyntaxKind syntaxKind, SourceLocation sourceLocation)
+        : base(syntaxKind, sourceLocation)
+    {
+    }
+}
+
 public enum LayeSyntaxKind
 {
     Invalid = 0,
@@ -57,12 +71,16 @@ public enum LayeSyntaxKind
     TokenLiteralString,
     TokenLiteralRune,
 
+    TokenQuestionDot,
+    TokenQuestionQuestion,
+    TokenQuestionQuestionEqual,
     TokenPlusPlus,
     TokenMinusMinus,
     TokenLessLess,
     TokenGreaterGreater,
     TokenEqualEqual,
     TokenBangEqual,
+    TokenBangDot,
     TokenPlusEqual,
     TokenMinusEqual,
     TokenSlashEqual,
@@ -119,6 +137,7 @@ public enum LayeSyntaxKind
     TokenVariant,
     TokenEnum,
     //TokenStrict,
+    TokenTemplate,
     TokenAlias,
     TokenTest,
     TokenImport,
@@ -147,7 +166,7 @@ public enum LayeSyntaxKind
     TokenForeign,
     TokenInline,
     TokenCallconv,
-    TokenImpure,
+    TokenPure,
     TokenDiscardable,
 }
 
