@@ -1,4 +1,9 @@
-﻿using System.Text;
+﻿// This file is licensed to you under the MIT license.
+// See the LICENSE file in the project root for more information.
+
+using System.Diagnostics;
+using System.Text;
+
 using Fucc.FrontEnd.C;
 
 namespace Fucc.FrontEnd.Laye;
@@ -143,14 +148,14 @@ public class LayeLexer : Lexer<LayeToken>
                     if (State.CurrentCharacter == '=')
                     {
                         Advance();
-                        return new(LayeSyntaxKind.TokenQuestionQuestionEqual, startLocation);
+                        return new(LayeSyntaxKind.TokenQuestionQuestionEqual, startLocation.UpTo(State.CurrentLocation));
                     }
-                    else return new(LayeSyntaxKind.TokenQuestionQuestion, startLocation);
+                    else return new(LayeSyntaxKind.TokenQuestionQuestion, startLocation.UpTo(State.CurrentLocation));
                 }
                 else if (State.CurrentCharacter == '.')
                 {
                     Advance();
-                    return new(LayeSyntaxKind.TokenQuestionDot, startLocation);
+                    return new(LayeSyntaxKind.TokenQuestionDot, startLocation.UpTo(State.CurrentLocation));
                 }
                 else return new((LayeSyntaxKind)currentCharacter, startLocation);
             }
@@ -161,7 +166,7 @@ public class LayeLexer : Lexer<LayeToken>
                 if (State.CurrentCharacter == '=')
                 {
                     Advance();
-                    return new(LayeSyntaxKind.TokenPercentEqual, startLocation);
+                    return new(LayeSyntaxKind.TokenPercentEqual, startLocation.UpTo(State.CurrentLocation));
                 }
                 else return new((LayeSyntaxKind)currentCharacter, startLocation);
             }
@@ -172,7 +177,7 @@ public class LayeLexer : Lexer<LayeToken>
                 if (State.CurrentCharacter == '=')
                 {
                     Advance();
-                    return new(LayeSyntaxKind.TokenAmpersandEqual, startLocation);
+                    return new(LayeSyntaxKind.TokenAmpersandEqual, startLocation.UpTo(State.CurrentLocation));
                 }
                 else return new((LayeSyntaxKind)currentCharacter, startLocation);
             }
@@ -183,7 +188,7 @@ public class LayeLexer : Lexer<LayeToken>
                 if (State.CurrentCharacter == '=')
                 {
                     Advance();
-                    return new(LayeSyntaxKind.TokenPipeEqual, startLocation);
+                    return new(LayeSyntaxKind.TokenPipeEqual, startLocation.UpTo(State.CurrentLocation));
                 }
                 else return new((LayeSyntaxKind)currentCharacter, startLocation);
             }
@@ -194,12 +199,12 @@ public class LayeLexer : Lexer<LayeToken>
                 if (State.CurrentCharacter == '=')
                 {
                     Advance();
-                    return new(LayeSyntaxKind.TokenPlusEqual, startLocation);
+                    return new(LayeSyntaxKind.TokenPlusEqual, startLocation.UpTo(State.CurrentLocation));
                 }
                 else if (State.CurrentCharacter == '+')
                 {
                     Advance();
-                    return new(LayeSyntaxKind.TokenPlusPlus, startLocation);
+                    return new(LayeSyntaxKind.TokenPlusPlus, startLocation.UpTo(State.CurrentLocation));
                 }
                 else return new((LayeSyntaxKind)currentCharacter, startLocation);
             }
@@ -210,12 +215,12 @@ public class LayeLexer : Lexer<LayeToken>
                 if (State.CurrentCharacter == '=')
                 {
                     Advance();
-                    return new(LayeSyntaxKind.TokenMinusEqual, startLocation);
+                    return new(LayeSyntaxKind.TokenMinusEqual, startLocation.UpTo(State.CurrentLocation));
                 }
                 else if (State.CurrentCharacter == '-')
                 {
                     Advance();
-                    return new(LayeSyntaxKind.TokenMinusMinus, startLocation);
+                    return new(LayeSyntaxKind.TokenMinusMinus, startLocation.UpTo(State.CurrentLocation));
                 }
                 else return new((LayeSyntaxKind)currentCharacter, startLocation);
             }
@@ -226,12 +231,12 @@ public class LayeLexer : Lexer<LayeToken>
                 if (State.CurrentCharacter == '=')
                 {
                     Advance();
-                    return new(LayeSyntaxKind.TokenEqualEqual, startLocation);
+                    return new(LayeSyntaxKind.TokenEqualEqual, startLocation.UpTo(State.CurrentLocation));
                 }
                 else if (State.CurrentCharacter == '>')
                 {
                     Advance();
-                    return new(LayeSyntaxKind.TokenEqualGreater, startLocation);
+                    return new(LayeSyntaxKind.TokenEqualGreater, startLocation.UpTo(State.CurrentLocation));
                 }
                 else return new((LayeSyntaxKind)currentCharacter, startLocation);
             }
@@ -242,7 +247,7 @@ public class LayeLexer : Lexer<LayeToken>
                 if (State.CurrentCharacter == '=')
                 {
                     Advance();
-                    return new(LayeSyntaxKind.TokenSlashEqual, startLocation);
+                    return new(LayeSyntaxKind.TokenSlashEqual, startLocation.UpTo(State.CurrentLocation));
                 }
                 else return new((LayeSyntaxKind)currentCharacter, startLocation);
             }
@@ -253,7 +258,7 @@ public class LayeLexer : Lexer<LayeToken>
                 if (State.CurrentCharacter == '=')
                 {
                     Advance();
-                    return new(LayeSyntaxKind.TokenLessEqual, startLocation);
+                    return new(LayeSyntaxKind.TokenLessEqual, startLocation.UpTo(State.CurrentLocation));
                 }
                 else if (State.CurrentCharacter == '<')
                 {
@@ -261,9 +266,9 @@ public class LayeLexer : Lexer<LayeToken>
                     if (State.CurrentCharacter == '=')
                     {
                         Advance();
-                        return new(LayeSyntaxKind.TokenLessLessEqual, startLocation);
+                        return new(LayeSyntaxKind.TokenLessLessEqual, startLocation.UpTo(State.CurrentLocation));
                     }
-                    else return new(LayeSyntaxKind.TokenLessLess, startLocation);
+                    else return new(LayeSyntaxKind.TokenLessLess, startLocation.UpTo(State.CurrentLocation));
                 }
                 else return new((LayeSyntaxKind)currentCharacter, startLocation);
             }
@@ -274,7 +279,7 @@ public class LayeLexer : Lexer<LayeToken>
                 if (State.CurrentCharacter == '=')
                 {
                     Advance();
-                    return new(LayeSyntaxKind.TokenGreaterEqual, startLocation);
+                    return new(LayeSyntaxKind.TokenGreaterEqual, startLocation.UpTo(State.CurrentLocation));
                 }
                 else if (State.CurrentCharacter == '>')
                 {
@@ -282,9 +287,9 @@ public class LayeLexer : Lexer<LayeToken>
                     if (State.CurrentCharacter == '=')
                     {
                         Advance();
-                        return new(LayeSyntaxKind.TokenGreaterGreaterEqual, startLocation);
+                        return new(LayeSyntaxKind.TokenGreaterGreaterEqual, startLocation.UpTo(State.CurrentLocation));
                     }
-                    else return new(LayeSyntaxKind.TokenGreaterGreater, startLocation);
+                    else return new(LayeSyntaxKind.TokenGreaterGreater, startLocation.UpTo(State.CurrentLocation));
                 }
                 else return new((LayeSyntaxKind)currentCharacter, startLocation);
             }
@@ -292,7 +297,7 @@ public class LayeLexer : Lexer<LayeToken>
             case '0': case '1': case '2': case '3': case '4':
             case '5': case '6': case '7': case '8': case '9':
             {
-                return ReadNumberOrIdentifierToken();
+                return ReadNumberOrIdentifierOrKeywordToken();
             }
 
             case '@':
@@ -401,7 +406,74 @@ public class LayeLexer : Lexer<LayeToken>
         return new(LayeSyntaxKind.TokenIdentifier, location);
     }
 
-    public LayeToken ReadNumberOrIdentifierToken()
+    public LayeToken ReadNumberOrIdentifierOrKeywordToken()
+    {
+        if (!LayeFacts.IsNumericLiteralDigit(State.CurrentCharacter) || !LayeFacts.IsIdentifierStartCharacter(State.CurrentCharacter))
+            throw new InternalCompilerException(State.CurrentLocation, $"{nameof(LayeLexer)}.{nameof(ReadNumberOrIdentifierOrKeywordToken)} was called when not at a valid identifier or numeric literal digit character.");
+        
+        var location = State.CurrentLocation;
+        var snapshot = State.TakeSnapshot();
+
+        while (!State.IsAtEnd && (LayeFacts.IsNumericLiteralDigit(State.CurrentCharacter) || State.CurrentCharacter == '_'))
+        {
+            if (State.CurrentCharacter == '_' && LayeFacts.IsNumericLiteralDigit(PeekCharacter(1)))
+                Advance();
+            
+            Advance();
+        }
+
+        if (!State.IsAtEnd && LayeFacts.IsIdentifierPartCharacter(State.CurrentCharacter))
+        {
+            State.RestoreFromSnapshot(snapshot);
+            return ReadIdentifierOrKeywordToken();
+        }
+        else
+        {
+            State.RestoreFromSnapshot(snapshot);
+            return ReadNumberToken();
+        }
+    }
+
+    private LayeToken ReadNumberToken()
+    {
+        if (!LayeFacts.IsNumericLiteralDigit(State.CurrentCharacter))
+            throw new InternalCompilerException(State.CurrentLocation, $"{nameof(LayeLexer)}.{nameof(ReadNumberToken)} was called when not at a valid numeric literal digit character.");
+        
+        var location = State.CurrentLocation;
+
+        long primaryNumberValue = 0;
+        while (!State.IsAtEnd && (LayeFacts.IsNumericLiteralDigit(State.CurrentCharacter) || State.CurrentCharacter == '_'))
+        {
+            if (State.CurrentCharacter == '_' && LayeFacts.IsNumericLiteralDigit(PeekCharacter(1)))
+            {
+                Advance();
+                continue;
+            }
+
+            int digitValue = LayeFacts.NumericLiteralDigitValue(State.CurrentCharacter);
+            Debug.Assert(digitValue >= 0 && digitValue <= 9);
+
+            Advance();
+
+            if (long.MaxValue - primaryNumberValue < digitValue)
+                throw new InternalCompilerException(State.CurrentLocation, $"{nameof(LayeLexer)}.{nameof(ReadNumberToken)} doesn't gracefully handle literals with a value larger than {long.MaxValue} currently.");
+
+            primaryNumberValue = primaryNumberValue * 10 + digitValue;
+        }
+
+        location = location.UpTo(State.CurrentLocation);
+        return new(LayeSyntaxKind.TokenLiteralInteger, location)
+        {
+            IntegerValue = primaryNumberValue,
+        };
+    }
+
+    private LayeToken ReadNumberTokenWithRadix(SourceLocation location, int radix)
+    {
+        throw new NotImplementedException();
+    }
+
+    private LayeToken ReadRealTokenAfterDot(SourceLocation location, int radix)
     {
         throw new NotImplementedException();
     }

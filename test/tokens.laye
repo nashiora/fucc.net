@@ -4,7 +4,7 @@ goto xyzzy assert try catch struct variant enum template alias test import
 export operator mut new delete cast is sizeof alignof offsetof not and or
 xor varargs const foreign inline callconv pure discardable
 
-foo bar baz vec2
+foo bar baz vec2 3d 123
 
 int main() { return foo; }
 

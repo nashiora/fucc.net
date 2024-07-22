@@ -1,4 +1,27 @@
+// This file is licensed to you under the MIT license.
+// See the LICENSE file in the project root for more information.
+
 namespace Fucc;
+
+public readonly struct LexerStateSnapshot
+{
+    public readonly SourceText Source;
+    public readonly int CurrentCharacterOffset;
+    public readonly int CurrentCharacterLength;
+    public readonly int CurrentCharacter;
+    public readonly bool IsAtStartOfLine;
+    public readonly bool IsAtStartOfLineIgnoringWhiteSpace;
+
+    internal LexerStateSnapshot(SourceText source, int currentCharacterOffset, int currentCharacterLength, int currentCharacter, bool isAtStartOfLine, bool isAtStartOfLineIgnoringWhiteSpace)
+    {
+        Source = source;
+        CurrentCharacterOffset = currentCharacterOffset;
+        CurrentCharacterLength = currentCharacterLength;
+        CurrentCharacter = currentCharacter;
+        IsAtStartOfLine = isAtStartOfLine;
+        IsAtStartOfLineIgnoringWhiteSpace = isAtStartOfLineIgnoringWhiteSpace;
+    }
+}
 
 public sealed class LexerState
 {
@@ -12,11 +35,29 @@ public sealed class LexerState
     public int CurrentCharacter { get; private set; }
 
     public bool IsAtStartOfLine { get; private set; } = true;
+    public bool IsAtStartOfLineIgnoringWhiteSpace { get; private set; } = true;
 
     public LexerState(SourceText source)
     {
         Source = source;
         ReadCharacter();
+    }
+
+    public LexerStateSnapshot TakeSnapshot()
+    {
+        return new(Source, CurrentCharacterOffset, CurrentCharacterLength, CurrentCharacter, IsAtStartOfLine, IsAtStartOfLineIgnoringWhiteSpace);
+    }
+
+    public void RestoreFromSnapshot(LexerStateSnapshot snapshot)
+    {
+        if (Source != snapshot.Source)
+            throw new ArgumentException("Lexer snapshot does not share the same source text.", nameof(snapshot));
+
+        CurrentCharacterOffset = snapshot.CurrentCharacterOffset;
+        CurrentCharacterLength = snapshot.CurrentCharacterLength;
+        CurrentCharacter = snapshot.CurrentCharacter;
+        IsAtStartOfLine = snapshot.IsAtStartOfLine;
+        IsAtStartOfLineIgnoringWhiteSpace = snapshot.IsAtStartOfLineIgnoringWhiteSpace;
     }
 
     public void ReadCharacter()
@@ -49,7 +90,19 @@ public sealed class LexerState
 
     public void Advance()
     {
-        IsAtStartOfLine = CurrentCharacter == '\n';
+        if (CurrentCharacter == '\n')
+        {
+            IsAtStartOfLine = true;
+            IsAtStartOfLineIgnoringWhiteSpace = true;
+        }
+        else
+        {
+            IsAtStartOfLine = false;
+            if (IsAtStartOfLineIgnoringWhiteSpace && !char.IsWhiteSpace((char)CurrentCharacter))
+            {
+                IsAtStartOfLineIgnoringWhiteSpace = false;
+            }
+        }
 
         CurrentCharacterOffset += CurrentCharacterLength;
         ReadCharacter();
@@ -64,6 +117,7 @@ public sealed class LexerState
         int currentCharacterLength = CurrentCharacterLength;
         int currentCharacter = CurrentCharacter;
         bool isAtStartOfLine = IsAtStartOfLine;
+        bool isAtStartOfLineIgnoringWhiteSpace = IsAtStartOfLineIgnoringWhiteSpace;
 
         for (int i = 0; i < ahead; i++)
             Advance();
@@ -74,18 +128,29 @@ public sealed class LexerState
         CurrentCharacterLength = currentCharacterLength;
         CurrentCharacter = currentCharacter;
         IsAtStartOfLine = isAtStartOfLine;
+        IsAtStartOfLineIgnoringWhiteSpace = isAtStartOfLineIgnoringWhiteSpace;
 
         return peekedCharacter;
     }
 }
 
+public interface ILexerToken
+{
+    public SourceLocation SourceLocation { get; }
+    public ReadOnlySpan<char> SourceSpan => SourceLocation.SourceSpan;
+
+    public bool IsEndOfFileToken { get; }
+}
+
 public interface ILexer<TToken>
+    where TToken : ILexerToken
 {
     public LexerState State { get; }
     public TToken ReadToken();
 }
 
 public abstract class Lexer<TToken>(LexerState state) : ILexer<TToken>
+    where TToken : ILexerToken
 {
     public LexerState State { get; } = state;
     public abstract TToken ReadToken();

@@ -1,3 +1,8 @@
+// This file is licensed to you under the MIT license.
+// See the LICENSE file in the project root for more information.
+
+using Fucc.FrontEnd.C;
+
 namespace Fucc.FrontEnd.Laye;
 
 public class LayeSyntax
@@ -12,18 +17,26 @@ public class LayeSyntax
     }
 }
 
-public class LayeToken : LayeSyntax
+public class LayeToken : LayeSyntax, ILexerToken, ICPreprocessorToken
 {
     public LayeSyntaxKind ContextualKind { get; internal set; } = LayeSyntaxKind.Invalid;
 
+    long ICPreprocessorToken.CPreprocessorIntegerValue => IntegerValue;
     public long IntegerValue { get; internal set; }
     public double FloatValue { get; internal set; }
     public string StringValue { get; internal set; } = string.Empty;
+
+    public bool IsCPreprocessorMacroParameter { get; set; }
+    public int CPreprocessorMacroParameterIndex { get; set; }
+
+    bool ILexerToken.IsEndOfFileToken => SyntaxKind == LayeSyntaxKind.TokenEndOfFile;
 
     public LayeToken(LayeSyntaxKind syntaxKind, SourceLocation sourceLocation)
         : base(syntaxKind, sourceLocation)
     {
     }
+
+    public override string ToString() => $"{SyntaxKind} :: {SourceLocation.SourceSpan}";
 }
 
 public enum LayeSyntaxKind
